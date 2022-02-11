@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+
+	httperors "github.com/myrachanto/custom-http-error"
 )
 
 var Fetcher fetcher
@@ -36,4 +38,10 @@ func (f *fetcher) Request(method, path string, body map[string]string) (*http.Re
 	}
 	client := &http.Client{}
 	return client.Do(req)
+}
+func (f *fetcher) Validate() httperors.HttpErr {
+	if f.Endpoint == "" {
+		return httperors.NewNotFoundError("Invalid EndPoint")
+	}
+	return nil
 }
