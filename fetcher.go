@@ -7,15 +7,17 @@ import (
 	"net/http"
 )
 
-type Fetcher struct {
+var Fetcher fetcher
+
+type fetcher struct {
 	Endpoint string
 	Token    string
 }
 
-func CreateFetcher(endpoint string) *Fetcher {
-	return &Fetcher{Endpoint: endpoint}
+func CreateFetcher(endpoint string) *fetcher {
+	return &fetcher{Endpoint: endpoint}
 }
-func (f *Fetcher) Request(method, path string, body map[string]string) (*http.Response, error) {
+func (f *fetcher) Request(method, path string, body map[string]string) (*http.Response, error) {
 	var data io.Reader = nil
 	if body != nil {
 		jsonData, err := json.Marshal(body)
